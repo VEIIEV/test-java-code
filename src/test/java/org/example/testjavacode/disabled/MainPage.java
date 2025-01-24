@@ -1,4 +1,4 @@
-package org.example.testjavacode;
+package org.example.testjavacode.disabled;
 
 import com.codeborne.selenide.SelenideElement;
 

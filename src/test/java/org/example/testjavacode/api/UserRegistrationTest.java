@@ -1,4 +1,4 @@
-package org.example.testjavacode;
+package org.example.testjavacode.api;
 
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;

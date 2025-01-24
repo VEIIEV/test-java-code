@@ -1,4 +1,4 @@
-package org.example.testjavacode;
+package org.example.testjavacode.api;
 
 import org.junit.jupiter.api.Test;
 
@@ -18,5 +18,7 @@ class DeleteUserTest {
                 .delete("/" + userId)
                 .then()
                 .statusCode(204);
+
+        System.out.println("User ["+userId+"] was successfully deleted.");
     }
 }
