@@ -109,7 +109,7 @@ public class UITest {
         String currentDate = LocalDate.now().format(formatter);
 
         Assertions.assertTrue(confirmationDate.contains(currentDate),
-                "Order date does not match current system date. Expected: " + currentDate + ", but was: " + confirmationDate);
+                "Order contains an incorrect date. Expected date: " + currentDate + ", but was: " + confirmationDate);
         System.out.println("Order date verified successfully!");
     }
 }
