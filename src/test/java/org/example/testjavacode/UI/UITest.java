@@ -1,21 +1,24 @@
 package org.example.testjavacode.UI;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import com.github.javafaker.Faker;
 import org.example.testjavacode.UI.pages.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.WebDriverListener;
 
 import java.lang.reflect.Method;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class UITest {
 
@@ -84,5 +87,29 @@ public class UITest {
         sleep(2000);
         assertEquals(totalPrice, cartPage.getTotalPrice());
         cartPage.placeOrder();
+
+        OrderPage orderPage = page(OrderPage.class);
+
+        orderPage.placeOrder(faker.name().name(),
+                "Russian Federation",
+                "Saratov",
+                faker.number().digits(16),
+                "01",
+                "2025"
+                );
+        verifyOrderDate();
+    }
+
+
+    public void verifyOrderDate() {
+        SelenideElement confirmationText = $x("//div[contains(@class, 'sweet-alert')]//p");
+        String confirmationDate = confirmationText.shouldBe(Condition.visible).getText();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String currentDate = LocalDate.now().format(formatter);
+
+        Assertions.assertTrue(confirmationDate.contains(currentDate),
+                "Order date does not match current system date. Expected: " + currentDate + ", but was: " + confirmationDate);
+        System.out.println("Order date verified successfully!");
     }
 }
